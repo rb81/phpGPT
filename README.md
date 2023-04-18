@@ -41,6 +41,12 @@ If streaming, simply call the ```gpt``` method to echo the results wherever it's
 $open_ai->gpt();
 ```
 
+If you'd like ChatGPT to respond with minimal commentary and explanations, simply set the ```concise``` parameter to ```true```:
+
+```php
+$open_ai->setup([ "concise" => true ]);
+```
+
 ## License
 
 phpGPT is released under the MIT License. See LICENSE for more information.

@@ -4,7 +4,7 @@ require_once("env.php"); // Set your OpenAI API key as 'OPENAI_API_KEY'
 
 class phpGPT {
 
-    private $payload;
+    private $payload, $concise = false;
     public $model, $temperature, $top_p, $n, $stream, $stop, $max_tokens;
     public $presence_penalty, $frequency_penalty, $logit_bias, $user;
 
@@ -25,6 +25,7 @@ class phpGPT {
      *  - frequency_penalty (float): Number between -2.0 and 2.0.
      *  - logit_bias (JSON): Modify the likelihood of specified tokens appearing in the completion.
      *  - user (string): A unique identifier representing the end-user.
+     *  - concise (boolean): A custom parameter to instruct ChatGPT to respond concisely.
      * 
      * @param array $par The configuration options for the OpenAI API request. 
      * @throws E_USER_ERROR if a parameter is invalid or outside of the accepted range.
@@ -72,7 +73,8 @@ class phpGPT {
                     
                     // How many chat completion choices to generate for each input message.
                     
-                    is_int($value) ? $this->payload["n"] = $this->n = $value : trigger_error("'n' should be a valid integer.", E_USER_ERROR);
+                    is_int($value) ? $this->payload["n"] = $this->n = $value : 
+                        trigger_error("'n' should be a valid integer.", E_USER_ERROR);
 
                     break;
 
@@ -81,7 +83,8 @@ class phpGPT {
                     // If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as 
                     // they become available, with the stream terminated by a data: [DONE] message.
                     
-                    is_bool($value) ? $this->payload["stream"] = $this->stream = $value : trigger_error("'stream' should be boolean.", E_USER_ERROR);
+                    is_bool($value) ? $this->payload["stream"] = $this->stream = $value : 
+                        trigger_error("'stream' should be boolean.", E_USER_ERROR);
                     
                     break;
 
@@ -146,6 +149,18 @@ class phpGPT {
                         trigger_error("'user' should be a valid string.", E_USER_ERROR);
 
                     break;
+
+                case "concise":
+
+                    // This is a custom parameter that instructs ChatGPT to return concise answers.
+
+                    is_bool($value) ? (($value !== true) ?: $this->concise = true) : 
+                        trigger_error("'concise' should be a boolean.", E_USER_ERROR);
+
+                    break;
+
+                default:
+                    trigger_error("Unknown parameter.", E_USER_ERROR);
             }
         }
     }
@@ -203,6 +218,14 @@ class phpGPT {
 
             // OpenAI does not recommend having both 'temperature' and 'top_p' set...
             trigger_error("Setting both temperature and top_p not recommended.", E_USER_WARNING);
+        }
+
+        if ($this->concise) {
+
+            // Adding this at the end of the array as it caused issues when inserted earlier...
+            $content = "Please respond without any additional commentary or explanations."; // <-- Seems to work most of the time!
+            $this->payload["messages"][] = [ "role" => "user", "content" => $content ];
+
         }
 
         $ch = curl_init();
