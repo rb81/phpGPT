@@ -26,7 +26,7 @@ You can then add messages to the conversation using the ```addMessage``` method:
 
 ```php
 $open_ai->addMessage("system", "You're a funny comedian.");
-$open_ai->addMessage("user", "Tell me a joke. Don't include any commentary other than the joke.");
+$open_ai->addMessage("user", "Tell me a joke.");
 ```
 
 Finally, you can generate a response using the ```gpt``` method and access the content of the response using the ```message_content``` property:
