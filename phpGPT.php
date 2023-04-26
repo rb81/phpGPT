@@ -26,6 +26,7 @@ class phpGPT {
      *  - logit_bias (JSON): Modify the likelihood of specified tokens appearing in the completion.
      *  - user (string): A unique identifier representing the end-user.
      *  - concise (boolean): A custom parameter to instruct ChatGPT to respond concisely.
+     *  - tone (string): A custom parameter that can be used instead of 'temperature'.
      * 
      * @param array $par The configuration options for the OpenAI API request. 
      * @throws E_USER_ERROR if a parameter is invalid or outside of the accepted range.
@@ -159,8 +160,36 @@ class phpGPT {
 
                     break;
 
+                case "tone":
+
+                    // This is a custom parameter that can be used instead of 'temperature'.
+                    // Note: This setting overrides 'temperature' and removes 'top_p' if either is set.
+
+                    $tones = ["creative", "balanced", "precise"];
+
+                    if (in_array($value, $tones)) {
+
+                        switch($value) {
+
+                            case "creative":
+                                $this->payload["temperature"] = 1.0;
+                                break;
+
+                            case "balanced":
+                                $this->payload["temperature"] = 0.5;
+                                break;
+
+                            case "precise":
+                                $this->payload["temperature"] = 0.0;
+                                break;
+                        }
+
+                    } else { trigger_error("'tone' should be 'creative', 'balanced' or 'precise.", E_USER_ERROR); }
+
+                    break;
+
                 default:
-                    trigger_error("Unknown parameter.", E_USER_ERROR);
+                trigger_error("Unknown parameter.", E_USER_ERROR);
             }
         }
     }
@@ -217,7 +246,7 @@ class phpGPT {
         } elseif (isset($this->temperature) && isset($this->top_p)) {
 
             // OpenAI does not recommend having both 'temperature' and 'top_p' set...
-            trigger_error("Setting both temperature and top_p not recommended.", E_USER_WARNING);
+            trigger_error("Setting both 'temperature' and 'top_p' not recommended. If using 'tone', be sure to remove 'top_p'.", E_USER_WARNING);
         }
 
         if ($this->concise) {
