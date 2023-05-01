@@ -9,12 +9,12 @@ require_once("../phpGPT.php");
  * character we provide it with, appropriate for a specific age. Once the story
  * is written, we prompt a new instance of ChatGPT with a request to confirm
  * that the story does not contain anything inappropriate for the age we
- * requested, including profantiy or unsuitable topics.
+ * requested, including profanity or unsuitable topics.
  * 
  * These instances are named "story teller" and "story checker".
  * 
  * WARNING: This tool uses a loop, so if the story checker instance does not
- * respond with 'true' then we assume the story is inappopriate and we prompt
+ * respond with 'true' then we assume the story is inappropriate and we prompt
  * the story teller instance with another request. In case ChatGPT responds
  * with anything other than 'true' in JSON, this could potentially loop
  * forever, consuming your tokens.
