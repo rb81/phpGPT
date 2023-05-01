@@ -19,7 +19,7 @@ require_once("../../phpGPT.php");
  * Once all tasks have been completed, the full set of findings is given back to
  * ChatGPT to expand, rewrite, format, etc. and return a final output.
  * 
- * Note: These prompt appear to be stable and work as expected with the temperature
+ * Note: These prompts appear to be stable and work as expected with the temperature
  * settings below; however, changing the temperature will likely create unexpected
  * results.
  * 
