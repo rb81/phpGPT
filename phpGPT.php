@@ -6,7 +6,7 @@ class phpGPT {
 
     private $payload, $concise = false;
     public $model, $temperature, $top_p, $n, $stream, $stop, $max_tokens;
-    public $presence_penalty, $frequency_penalty, $logit_bias, $user;
+    public $presence_penalty, $frequency_penalty, $logit_bias, $user, $curl_timeout = 90;
 
     /**
      * Sets the configuration options for the OpenAI API request. 
@@ -263,7 +263,7 @@ class phpGPT {
             CURLOPT_URL => "https://api.openai.com/v1/chat/completions",
             CURLOPT_POSTFIELDS => json_encode($this->payload),
             CURLOPT_POST => true,
-            CURLOPT_TIMEOUT => 90,
+            CURLOPT_TIMEOUT => $curl_timeout,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
                 "Content-Type: application/json",
