@@ -34,6 +34,30 @@ $mission = "Identify a novel use for ChatGPT that may benefit mankind.";
 ####################################################################################################
 ####################################################################################################
 
+// We will use ChatGPT to identify the role needed to complete the mission...
+$role_identifier = new phpGPT();
+$role_identifier->setup([ "model" => "gpt-3.5-turbo", "temperature" => 0.0 ]);
+
+$prompt = <<<PROMPT
+Respond with a role description for a ChatGPT prompt needed to complete the objective below.
+Respond only with the role description, and no other text.
+
+Example
+```
+You are an expert medical researcher specialized in neurology.
+```
+
+Objective
+```
+$mission
+```
+PROMPT;
+
+$role_identifier->addMessage("system", "You are a helpful assistant with a detailed understanding of ChatGPT.");
+$role_identifier->addMessage("user", $prompt);
+
+$role = $role_identifier->gpt()->message_content;
+
 // The first agent is the "MANAGER", who sets the mission and defines the tasks...
 $manager = new phpGPT();
 $manager->setup([ "model" => "gpt-3.5-turbo", "temperature" => 0.0 ]);
@@ -88,8 +112,7 @@ $mission
 PROMPT;
 
 // Add the required statements to the payload...
-// (System role could be more specific, but GPT-3 doesn't pay much attention to this. Update this for GPT-4.)
-$manager->addMessage("system", "You're an autonomous agent, capable of executing various tasks.");
+$manager->addMessage("system", $role);
 $manager->addMessage("user", $prompt);
 
 // Submit the payload to ChatGPT and generate a task list...
@@ -131,8 +154,7 @@ foreach ($task_list->tasks as $assignment) {
     PROMPT;
 
     // Add the required statements to the payload...
-    // (System role could be more specific, but GPT-3 doesn't pay much attention to this. Update this for GPT-4.)
-    $researcher->addMessage("system", "You're an autonomous agent, capable of executing various tasks.");
+    $researcher->addMessage("system", $role);
     $researcher->addMessage("user", $prompt);
 
     // Submit the payload to ChatGPT and add the response to our collection...
@@ -159,8 +181,7 @@ $response_collection
 PROMPT;
 
 // Add the required statements to the payload...
-// (System role could be more specific, but GPT-3 doesn't pay much attention to this. Update this for GPT-4.)
-$reporter->addMessage("system", "You're an autonomous agent, capable of executing various tasks.");
+$reporter->addMessage("system", $role);
 $reporter->addMessage("user", $prompt);
 
 $reporter->$curl_timeout = 180; // Default is 90 seconds, but we may need more time...
