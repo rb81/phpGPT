@@ -126,7 +126,7 @@ foreach ($task_list->tasks as $assignment) {
 
     $prompt .= <<<PROMPT
     Don't explain the task, but actually complete it.
-    Respond with a detailed summary of your conclusion for the task.
+    Respond with a detailed response for the task.
     Do not try to complete the mission, only the task.
     PROMPT;
 
@@ -147,7 +147,7 @@ $reporter->setup([ "model" => "gpt-3.5-turbo", "temperature" => 0.5 ]);
 $response_collection = json_encode($response_collection);
 
 $prompt = <<<PROMPT
-Write a summary report based on the information provided below.
+Write a report based on the information provided below.
 Include a report title, section headings, a table of contents, and executive summary.
 Add any relevant data to explain or support the findings.
 Use tables to present any data (if necessary).
