@@ -263,7 +263,7 @@ class phpGPT {
             CURLOPT_URL => "https://api.openai.com/v1/chat/completions",
             CURLOPT_POSTFIELDS => json_encode($this->payload),
             CURLOPT_POST => true,
-            CURLOPT_TIMEOUT => $curl_timeout,
+            CURLOPT_TIMEOUT => $this->curl_timeout,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
                 "Content-Type: application/json",
