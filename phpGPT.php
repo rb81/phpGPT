@@ -43,7 +43,7 @@ class phpGPT {
                     // ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API.
                     // https://platform.openai.com/docs/models/model-endpoint-compatibility
                     
-                    $valid_models = ["gpt-4", "gpt-4-0314", "gpt-4-32k", "gpt-4-32k-0314", "gpt-3.5-turbo", "gpt-3.5-turbo-0301"];
+                    $valid_models = ["gpt-4", "gpt-4-turbo-preview", "gpt-4-vision-preview", "gpt-4-32k", "gpt-3.5-turbo", "gpt-3.5-turbo-16k"];
                     
                     (is_string($value) && in_array($value, $valid_models)) ? $this->payload["model"] = $this->model = $value : 
                         trigger_error("'model' is invalid.", E_USER_ERROR);
