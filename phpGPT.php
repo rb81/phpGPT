@@ -136,9 +136,7 @@ class phpGPT {
                     // exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; 
                     // values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
 
-                    $json = json_decode($value);
-                    ($json !== null && json_last_error() === JSON_ERROR_NONE) ? $this->payload["logit_bias"] = $this->logit_bias = $value : 
-                        trigger_error("'logit_bias' should be a valid JSON string.", E_USER_ERROR);
+                    (is_array($value)) ? $this->payload["logit_bias"] = $this->logit_bias = $value : trigger_error("'logit_bias' should be an array.", E_USER_ERROR);
 
                     break;
 
