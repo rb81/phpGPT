@@ -1,3 +1,10 @@
+![Deprecated](https://img.shields.io/badge/status-deprecated-red)
+
+**⚠️ DEPRECATED REPOSITORY**
+This project is no longer actively maintained and may be out of date.
+
+---
+
 # phpGPT
 
 phpGPT is an unofficial, community-supported PHP wrapper for the OpenAI ChatGPT API, allowing you to easily generate responses to user input using the power of ChatGPT.
